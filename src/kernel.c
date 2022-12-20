@@ -44,8 +44,7 @@ size_t strlen(const char* str){
     size_t len = 0;
     while(str[len])
         len++;
-    return len;terminal_writechar('A', 15);
-    terminal_writechar('B', 15);
+    return len;
 }
 
 void print(const char* str){
@@ -59,6 +58,13 @@ void kernel_main(){
 
     terminal_initialize();
 
-    print("Hello, world! \n test \n test2");
+    print("-----------------\n");
+    print("|               |\n");
+    print("|               |\n");
+    print("|               |\n");
+    print("|               |\n");
+    print("|               |\n");
+    print("|               |\n");
+    print("-----------------\n");
     
 }
