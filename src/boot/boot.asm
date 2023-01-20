@@ -4,7 +4,7 @@ BITS 16
 CODE_SEG equ gdt_code - gdt_start
 DATA_SEG equ gdt_data - gdt_start
 
-;Bios Parameter Block
+; Bios Parameter Block
 _start:
     jmp short start
     nop
@@ -13,8 +13,6 @@ times 33 db 0
 
 start:
     jmp 0:step2
-
-
 
 step2:
     cli ; Clear Interrupts
@@ -33,9 +31,7 @@ step2:
     mov cr0, eax
     jmp CODE_SEG: load32
    
-
-
-;GDT
+;Global Descriptor Table
 gdt_start:
 gdt_null:
     dd 0x0
@@ -68,7 +64,7 @@ gdt_descriptor:
 [BITS 32]
 load32:
     mov eax, 1          ;   Starting Sector
-    mov ecx, 100        ;   Numbre of Sectors to load
+    mov ecx, 100        ;   Number of Sectors to load
     mov edi, 0x0100000  ;   Address to load them
     call ata_lba_read
     jmp CODE_SEG:0x0100000
@@ -78,19 +74,19 @@ ata_lba_read:
     mov ebx, eax    ;   Backup the LBA
     ;   Send the highest 8 bits of the lba to hard disk controller
     shr eax, 24
-    or eax, 0xE0 ;  Select the master drive
+    or eax, 0xE0    ;   Select the master drive
     mov dx, 0x1F6   ;   Port to read
     out dx, al
-    ;   Finished sending highest 8 bits to the lba
+    ;   Finished sending highest 8 bits of the LBA
 
     ;   Send the total sectors to read
     mov eax, ecx
-    mov dx, 0x1F2   ;    Port to read
+    mov dx, 0x1F2   ;   Port to read
     out dx, al
     ;   Finished sending the total sectors to read
 
     ;   Send more bits of the LBA
-    mov eax, ebx ;  Restore the backup
+    mov eax, ebx    ;   Restore the backup
     mov dx, 0x1F3   ;   Port to read
     out dx, al
     ;   Finished sending more bits of the LBA
@@ -135,4 +131,4 @@ ata_lba_read:
     ret 
 
 times 510- ($-$$) db 0
-dw 0xAA55       ;little endian it will read 0x55Aprint:
+dw 0xAA55       ;little endian it will read 0x55AA
