@@ -6,6 +6,8 @@ extern no_interrupt_handler
 global int21h
 global no_interrupt
 global idt_load
+global enable_interrupts
+global disable_interrupts
 
 
 idt_load:
@@ -16,6 +18,14 @@ idt_load:
     lidt [ebx]
 
     pop ebp
+    ret
+
+enable_interrupts:
+    sti     ; enable interrupts
+    ret
+
+disable_interrupts:
+    cli     ; disable interrupts
     ret
 
 int21h:

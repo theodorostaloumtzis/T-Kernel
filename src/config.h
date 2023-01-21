@@ -3,6 +3,7 @@
 
 
 #define KERNEL_CODE_SELECTOR 0x08  // 0x08 is the kernel code selector
+
 #define KERNEL_DATA_SELECTOR 0x10  // 0x10 is the kernel data selector
 
 #define PERSONALOS_TOTAL_INTERRUPTS 512  // total number of interrupts
