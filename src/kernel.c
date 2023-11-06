@@ -5,6 +5,7 @@
 #include "io/io.h"
 #include "memory/heap/kheap.h"
 #include "memory/paging/paging.h"
+#include "disk/disk.h"
 
 
 uint16_t* video_memory = 0;
@@ -87,23 +88,17 @@ void kernel_main()
     // Initialize the interrupt descriptor table
     idt_init();
 
+    // Search and Initialize the disks
+    disk_search_init();
+
     // Initialize paging
     kernel_chunk = paging_new_4gb(PAGING_IS_WRITEABLE|PAGING_IS_PRESENT|PAGING_ACCESS_FROM_ALL);
 
     // Switch to the kernel directory
     paging_switch(paging_get_directory(kernel_chunk));
 
-    char* ptr = kzalloc(4096); 
-    paging_set(paging_get_directory(kernel_chunk), (void*)0x1000, (uint32_t)ptr | PAGING_IS_WRITEABLE | PAGING_IS_PRESENT | PAGING_ACCESS_FROM_ALL);
-
     // Enable paging
     enable_paging();
-
-    char* ptr2 = (char*) 0x1000;
-    ptr2[0] = 'a';
-    ptr2[1] = 'b';
-    print(ptr2);
-    print(ptr);
     
     // Enable interrupts
     enable_interrupts();

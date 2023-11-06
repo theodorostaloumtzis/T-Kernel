@@ -16,5 +16,7 @@
 
 #define PERSONALOS_HEAP_TABLE_ADDRESS 0x00007e00 // 2 KB heap table address
 
+#define PERSONALOS_SECTOR_SIZE 512 // 512 bytes per sector
+
 
 #endif
