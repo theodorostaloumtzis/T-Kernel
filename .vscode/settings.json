@@ -3,6 +3,8 @@
     "files.associations": {
         "config.h": "c",
         "idt.h": "c",
-        "stddef.h": "c"
+        "stddef.h": "c",
+        "pparser.h": "c",
+        "paging.h": "c"
     }
 }
