@@ -10,7 +10,6 @@
 #include "fs/pparser.h"
 
 
-
 uint16_t* video_memory = 0;
 uint16_t terminal_row = 0;
 uint16_t terminal_col = 0;
@@ -59,8 +58,6 @@ void terminal_initialize()
 }
 
 
-
-
 void print(const char* str)
 {
     size_t len = strlen(str);
@@ -81,11 +78,11 @@ void kernel_main()
     // Initialize the kernel heap
     kheap_init();
 
+    // Search for and initialize the disk
+    disk_search_and_init();
+
     // Initialize the interrupt descriptor table
     idt_init();
-
-    // Search and Initialize the disks
-    disk_search_init();
 
     // Initialize paging
     kernel_chunk = paging_new_4gb(PAGING_IS_WRITEABLE|PAGING_IS_PRESENT|PAGING_ACCESS_FROM_ALL);
@@ -93,21 +90,19 @@ void kernel_main()
     // Switch to the kernel directory
     paging_switch(paging_get_directory(kernel_chunk));
 
+    char* ptr = kzalloc(4096); 
+    paging_set(paging_get_directory(kernel_chunk), (void*)0x1000, (uint32_t)ptr | PAGING_IS_WRITEABLE | PAGING_IS_PRESENT | PAGING_ACCESS_FROM_ALL);
+
     // Enable paging
     enable_paging();
-    
+
     // Enable interrupts
     enable_interrupts();
 
-    struct path_root* root_path = pathparser_parse("0:/bin/shell.exe", NULL);
-
-    if(root_path)
-    {
-        print("Found path\n");
+    // Test the path parser
+    struct path_root* root_path = pathparser_parse("0:/usr/bin/shell.exe", NULL);
+    if(root_path){
+        print("Path parsed successfully\n");
         pathparser_free(root_path);
     }
-    else
-    {
-        print("Could not find path\n");
-    }   
 }

@@ -11,15 +11,15 @@ void* memset(void* ptr, int c, size_t size)  // set memory
     return ptr;  
 }
 
-int memcmp(void* s1, void* s2, int count) // compare memory
+int memcmp(void* s1, void* s2, int count)  // compare memory
 {
-    char* c_s1 = (char*)s1;
-    char* c_s2 = (char*)s2;
-    while(count-- >0) // while count is greater than 0
-    {
-        if(*c_s1++ != *c_s2++)  // if they are not equal return -1 if s1 is less than s2 and 1 if s1 is greater than s2
-            return c_s1[-1] < c_s2[-1] ? -1 : 1;  // if they are not equal return -1 if s1 is less than s2 and 1 if s1 is greater than s2 (ternary operator
+    char* c1 = s1; 
+    char* c2 = s1;
+    while(count-- > 0){
+        if(*c1++ != *c2++){
+            return c1[-1] < c2[-1] ? -1 : 1; // if c1 is less than c2, return -1, else return 1
+        }
     }
-    return 0;  // if they are equal
-
+    
+    return 0;
 }
