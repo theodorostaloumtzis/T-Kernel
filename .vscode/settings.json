@@ -5,6 +5,7 @@
         "idt.h": "c",
         "stddef.h": "c",
         "pparser.h": "c",
-        "paging.h": "c"
+        "paging.h": "c",
+        "kheap.h": "c"
     }
 }
