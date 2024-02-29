@@ -5,11 +5,31 @@ CODE_SEG equ gdt_code - gdt_start
 DATA_SEG equ gdt_data - gdt_start
 
 ; Bios Parameter Block
-_start:
     jmp short start
     nop
 
-times 33 db 0
+; FAT16 Header
+OEMIdentifier       db 'T-KERNEL' ; OEM Identifier
+BytesPerSector      dw 0x200 ; 512 bytes per sector
+SectorsPerCluster   db 0x80 ; 128 sectors per cluster
+ReservedSectors     dw 200 ; 200 reserved sectors
+FATCopies           db 2 ; 2 FAT copies
+RootDirEntries      dw 0x40 ; 64 root directory entries
+NumSectors          dw 0x00 
+MediaType           db 0xf8 ; Media type
+SectorsPerFAT       dw 0x100 ; 256 sectors per FAT
+SectorsPerTrack     dw 0x20 ; 32 sectors per track
+NumberOfHeads       dw 0x40 ; 64 heads
+HiddenSectors       dd 0x00 ; 0 hidden sectors
+LargeSectors        dd 0x773594 
+
+; Extended BPB (Dos 4.0)
+DriveNumber        db 0x80 ; Drive number
+WinNTBit           db 0x00 ; Windows NT bit
+Signature          db 0x29 ; Signature
+VolumeID           dd 0xd105 ; Volume ID
+VolumeIDString    db 'T-KERNEL1.0' ; Volume ID String
+SystemIDString    db 'FAT16   ' ; System ID String
 
 start:
     jmp 0:step2
